@@ -2,7 +2,7 @@ import serial       # Para la comunicacion Serial
 from datetime import date   # Para obtener la fecha
 import unidecode
 
-listaTxt = 'AsIstEEEncia.txt'
+listaTxt = 'lista.txt'	# Cambia el nombre del archivo donde se guardan los registros de las tarjetas
 
 try:            # Se conecta al puerto Serial
     ser = serial.Serial('COM7')     # Cambia el puerto si es necesario
