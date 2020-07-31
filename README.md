@@ -18,6 +18,6 @@ Nombre y Apellidos
 
 Para un correcto funcionamiento el archivo debe terminar con un salto de línea. Si el programa de Python tiene problemas leyendo lista.txt, puede que el archivo se haya corrompido, prueba a copiar el contenido del archivo en un nuevo archivo txt con el mismo nombre.
 
-En RollCaller V3.0.py se puede editar el nombre del archivo que registra las tarjetas en la línea 5, y el puerto al cuál está conectado el Arduino en la línea 8.
+En RollCaller V3.0.py se puede editar el nombre del archivo que registra las tarjetas en la línea 5.
 
 Página del proyecto: https://edu.ieee.org/es-ugr/proyectos/rollcaller/
