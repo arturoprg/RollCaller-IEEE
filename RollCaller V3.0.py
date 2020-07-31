@@ -2,13 +2,20 @@ import serial       # Para la comunicacion Serial
 from datetime import date   # Para obtener la fecha
 import unidecode
 
-listaTxt = 'lista.txt'	# Cambia el nombre del archivo donde se guardan los registros de las tarjetas
-
-try:            # Se conecta al puerto Serial
-    ser = serial.Serial('COM7')     # Cambia el puerto si es necesario
-    ser.reset_input_buffer()
-except:
-    input("Revisa el puerto o vuelve a conectar el Pasalista")
+listaTxt = 'AsIstEEEncia.txt'
+puertoCorrecto = False
+while(puertoCorrecto == False):
+    try:            # Se conecta al puerto Serial
+        puerto = input("Escribe el puerto al que se ha conectado el arduino (ej COM7):\n").upper()
+        ser = serial.Serial(puerto)
+        ser.reset_input_buffer()
+        if puerto[-1] == " ":
+            LaTex = "\item "
+        else:
+            LaTex = ""
+        puertoCorrecto = True
+    except:
+        print("Puerto no válido\n")
 
 def Lector():        # Lee la entrada Serial
     lec = []        # Array para guardar el codigo
@@ -63,7 +70,7 @@ def Anadir_txt(nombre,tupla):   # Añade un nombre a lista.txt
                 archivo.write(f"{int(numero)}\n")
             archivo.write(f"{nombre}\n")        # Añade el nombre
         with open(f"{date.today()}.txt","a") as archivo:    # Añade el nombre a la lista de hoy
-            archivo.write(f"{nombre}\n")
+            archivo.write(f"{LaTex}{nombre}\n")
 
     except:
         ser.write(b'2')
@@ -85,6 +92,7 @@ def Enviar(nombre):     # Pone el nombre que envia correcto para la LCD
 def main():
     Nombres = set({})           # Lista de los nombres que ya han pasado
     lista = Procesar_txt()      # Diccionario
+
     print(f"Asistencia {date.today()}\n")
     while True:                 # Bucle de funcionamiento
         lec_tup = Lector()      # Se lee la tarjeta
@@ -94,12 +102,13 @@ def main():
                 Nombres.add(nombre)
                 Enviar(nombre)
                 with open(f"{date.today()}.txt","a") as archivo:
-                    archivo.write(f"{nombre}\n")
+                    archivo.write(f"{LaTex}{nombre}\n")
                 print(nombre)
         else:                   # Si no, te pide guardarlo
             ser.write(b'1')
             nombre_nuevo = input(f"No se encuentra el código {lec_tup}, introduce Nombre y Apellidos\n")
             Anadir_txt(nombre_nuevo,lec_tup)
+            Nombres.add(nombre_nuevo)
             Enviar(nombre_nuevo)
             lista = Procesar_txt()
     return()
